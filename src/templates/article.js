@@ -9,6 +9,24 @@ import WhiteContainer from '../components/white-container';
 import Breadcrumb from '../components/breadcrumb';
 import SEO from '../components/seo';
 
+const rendererOptions = ({ locale = 'en-US' }) => ({
+  renderNode: {
+    [BLOCKS.EMBEDDED_ASSET]: ({ data }) => {
+      // check for assets only
+      if (data.target.sys.type !== 'Asset') return;
+
+      // check for images only
+      if (data.target.fields.file[locale].contentType.startsWith('image')) {
+        return (
+          <img
+            src={data.target.fields.file[locale].url}
+            alt={data.target.fields.title[locale]}
+          />
+        );
+      }
+    },
+  },
+});
 
 const ArticleTitle = styled.h1`
   margin-bottom: 32px;
